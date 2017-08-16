@@ -1,6 +1,6 @@
 # Digital zoom for ez_wifibroadcast
 
-WORK IN PROGRESS. Replacement for raspivid in ez_wifibroadcast to allow for 4x digital zoom and digital pan with control from Pixhawk. Currently it works only with RasPi camera V2, but easy could be transformed for V1 support (with less zoom).
+WORK IN PROGRESS. Replacement for raspivid in ez_wifibroadcast to allow for 4x digital zoom and digital pan with control from Pixhawk. It is adapted to RasPi camera V2, but can be used with V1 but zoom will not be so effective.
 
 ## Idea
 The idea is very simple. It uses max resolution of 3280x2464 (mode #2, see http://picamera.readthedocs.io/en/release-1.13/fov.html#sensor-modes)
@@ -22,3 +22,18 @@ On Raspberry Pi run:
 ``
 python video2.py | nc -p 1904 -u <your computer IP> 1234
 ``
+
+## Use it with your ez-wifibroadcast
+To use that script with your ez-wifibroadcast, you need to (all changes are done on TX side):
+- copy video.py to your sdcard /root folder
+- change one line in your ez-wifibroadcast sdcard /root/.profile file.
+
+Comment this line for later reference:
+``
+nice -n -9 raspivid -w $WIDTH -h $HEIGHT -fps $FPS -b $BITRATE -g $KEYFRAMERATE -t 0 $EXTRAPARAMS $ANNOTATION -o - | nice -n -9 /root/wifibroadcast/tx_$TXMODE.$VIDEO_WIFI_BITRATE -p 0 -b $VIDEO_BLOCKS -r $VIDEO_FECS -f $VIDEO_BLOCKLENGTH $NICS
+``
+
+And add this line:
+nice -n -9 python /root/video.py | nice -n -9 /root/wifibroadcast/tx_$TXMODE.$VIDEO_WIFI_BITRATE -p 0 -b $VIDEO_BLOCKS -r $VIDEO_FECS -f $VIDEO_BLOCKLENGTH $NICS
+
+Put back sdcard to your raspberry and check what you see.
