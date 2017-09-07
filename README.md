@@ -29,11 +29,13 @@ To use that script with your ez-wifibroadcast, you need to (all changes are done
 - change one line in your ez-wifibroadcast sdcard /root/.profile file.
 
 Comment this line for later reference:
-``
+```
 nice -n -9 raspivid -w $WIDTH -h $HEIGHT -fps $FPS -b $BITRATE -g $KEYFRAMERATE -t 0 $EXTRAPARAMS $ANNOTATION -o - | nice -n -9 /root/wifibroadcast/tx_$TXMODE.$VIDEO_WIFI_BITRATE -p 0 -b $VIDEO_BLOCKS -r $VIDEO_FECS -f $VIDEO_BLOCKLENGTH $NICS
-``
+```
 
 And add this line:
+```
 nice -n -9 python /root/video.py | nice -n -9 /root/wifibroadcast/tx_$TXMODE.$VIDEO_WIFI_BITRATE -p 0 -b $VIDEO_BLOCKS -r $VIDEO_FECS -f $VIDEO_BLOCKLENGTH $NICS
+```
 
 Put back sdcard to your raspberry and check what you see.
