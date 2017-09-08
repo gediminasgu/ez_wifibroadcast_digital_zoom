@@ -1,1 +1,3 @@
 ZOOM_CHANNEL_NO = 6
+DEBUG = False
+SET_SYSTEM_TIME = False
